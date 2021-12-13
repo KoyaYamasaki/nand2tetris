@@ -10,6 +10,7 @@ import Foundation
 
 class VMtranslator {
     static var parser: Parser!
+    static var codeWriter: CodeWriter!
 
     static func main() {
         let arguments = ProcessInfo().arguments
@@ -19,7 +20,7 @@ class VMtranslator {
             fatalError("target .vm file is not specified.")
         }
 
-        let fileUrl = currentPath + "/" + arguments[1]
+//        let fileUrl = currentPath + "/" + arguments[1]
         let url = URL(fileURLWithPath: arguments[1])
         let fileName = url.lastPathComponent
 
@@ -29,8 +30,8 @@ class VMtranslator {
 
         let outputFile = fileName.replacingOccurrences(of: "vm", with: "asm")
         parser = Parser(fileURLStr: arguments[1])
-
-//        createOutputFile(path: currentPath, outputFile: outputFile)
+        codeWriter = CodeWriter(inputFile: url, outputFile: outputFile)
+        codeWriter.setup()
         start()
     }
 
@@ -47,9 +48,9 @@ class VMtranslator {
             print("\(parser.commandType.rawValue) : \(parser.currentCommand)")
             switch parser.commandType {
             case .C_ARITHMETIC:
-                print(parser.currentCommand)
+                codeWriter.writeArithmetic(command: parser.arg1())
             case .C_PUSH:
-                print(parser.currentCommand)
+                codeWriter.writePushPop(command: parser.commandType, segment: parser.arg1(), index: Int(parser.arg2())!)
             case .C_POP:
                 print(parser.currentCommand)
             default:
@@ -59,6 +60,7 @@ class VMtranslator {
             print("=========================")
             line += 1
         }
+        codeWriter.close()
     }
 }
 

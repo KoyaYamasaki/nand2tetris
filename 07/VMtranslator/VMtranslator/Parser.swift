@@ -74,7 +74,7 @@ class Parser {
     }
     
     func arg1() -> String {
-        guard position == -1 else {
+        guard position != -1 else {
             fatalError("Invalid to call this func before starting parse")
         }
 
@@ -86,9 +86,9 @@ class Parser {
     }
 
     func arg2() -> String  {
-        guard commandType == .C_PUSH,
-            commandType == .C_POP,
-            commandType == .C_FUNCTION,
+        guard commandType == .C_PUSH ||
+            commandType == .C_POP ||
+            commandType == .C_FUNCTION ||
             commandType == .C_CALL else {
             fatalError("Invalid to call thic func while currenCommad is not C_PUSH, C_POP, C_FUNCTION or C_CALL")
         }
