@@ -11,6 +11,7 @@
 		1A2FC0AD2761DA77000F4351 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2FC0AC2761DA77000F4351 /* Parser.swift */; };
 		1A2FC0AF2762D5FD000F4351 /* CommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2FC0AE2762D5FD000F4351 /* CommandType.swift */; };
 		1A2FC0B12762E155000F4351 /* CodeWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2FC0B02762E155000F4351 /* CodeWriter.swift */; };
+		1A351C8B27686E490029A569 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A351C8A27686E490029A569 /* Extentions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,7 @@
 		1A2FC0AC2761DA77000F4351 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		1A2FC0AE2762D5FD000F4351 /* CommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandType.swift; sourceTree = "<group>"; };
 		1A2FC0B02762E155000F4351 /* CodeWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeWriter.swift; sourceTree = "<group>"; };
+		1A351C8A27686E490029A569 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 			children = (
 				1A2FC0A42761D817000F4351 /* main.swift */,
 				1A2FC0B02762E155000F4351 /* CodeWriter.swift */,
+				1A351C8A27686E490029A569 /* Extentions.swift */,
 				1A2FC0AC2761DA77000F4351 /* Parser.swift */,
 				1A2FC0AE2762D5FD000F4351 /* CommandType.swift */,
 			);
@@ -131,6 +134,7 @@
 			files = (
 				1A2FC0AF2762D5FD000F4351 /* CommandType.swift in Sources */,
 				1A2FC0AD2761DA77000F4351 /* Parser.swift in Sources */,
+				1A351C8B27686E490029A569 /* Extentions.swift in Sources */,
 				1A2FC0A52761D817000F4351 /* main.swift in Sources */,
 				1A2FC0B12762E155000F4351 /* CodeWriter.swift in Sources */,
 			);
