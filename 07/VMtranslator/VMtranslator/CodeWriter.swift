@@ -13,10 +13,6 @@ class CodeWriter {
     var fileHandle: FileHandle
 
     private var stackBasePointer: Int = 256
-    private var lclBasePointer: Int = 300
-    private var argBasePointer: Int = 400
-    private var thisBasePointer: Int = 3000
-    private var thatBasePointer: Int = 3010
 
     private var funcIndex: Int = 0
 
