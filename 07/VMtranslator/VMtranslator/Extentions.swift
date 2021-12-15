@@ -20,10 +20,28 @@ extension String {
         case "that":
             return "THAT"
         case "temp":
-            let tempBaseAddress = index + 5
-            return "R\(tempBaseAddress)"
+            let tempAddress = index + 5
+            return "R\(tempAddress)"
+        case "pointer":
+            let pointerAddress = index + 3
+            return "R\(pointerAddress)"
         default:
-            return self
+            fatalError("No correspondingSymbol was found")
+        }
+    }
+
+    func correspondingBaseAddress() -> Int {
+        switch self {
+        case "local":
+            return 300
+        case "argument":
+            return 400
+        case "this":
+            return 3000
+        case "that":
+            return 3010
+        default:
+            fatalError("No correspondingBaseAddress was found")
         }
     }
 }

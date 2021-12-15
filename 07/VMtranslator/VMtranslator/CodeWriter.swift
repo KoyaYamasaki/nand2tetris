@@ -20,6 +20,9 @@ class CodeWriter {
 
     private var funcIndex: Int = 0
 
+    // This is for the StackArithmetic test work properly.
+    private var useThisAndThat = false
+
     init(inputFile: URL, outputFile: String) {
         let outputFileDir = inputFile.deletingLastPathComponent().appendingPathComponent(outputFile)
 
@@ -39,26 +42,6 @@ class CodeWriter {
         writeCommand("@\(stackBasePointer)")
         writeCommand("D=A")
         writeCommand("@SP")
-        writeCommand("M=D")
-
-        writeCommand("@\(lclBasePointer)")
-        writeCommand("D=A")
-        writeCommand("@LCL")
-        writeCommand("M=D")
-
-        writeCommand("@\(argBasePointer)")
-        writeCommand("D=A")
-        writeCommand("@ARG")
-        writeCommand("M=D")
-
-        writeCommand("@\(thisBasePointer)")
-        writeCommand("D=A")
-        writeCommand("@THIS")
-        writeCommand("M=D")
-
-        writeCommand("@\(thatBasePointer)")
-        writeCommand("D=A")
-        writeCommand("@THAT")
         writeCommand("M=D")
     }
 
@@ -128,8 +111,8 @@ class CodeWriter {
 
         switch commandType {
         case .C_PUSH:
-            setSegmentAddress(segment: segment, index: index)
-            getSegmentAddressValue(segment: segment, index: index)
+            setSegmentAddress(segment: segment, index: index, forward: true)
+            setSegmentAddressValueToD(segment: segment, index: index)
             writeCommand("@SP")
             writeCommand("A=M")
             writeCommand("M=D")
@@ -137,7 +120,7 @@ class CodeWriter {
             writeCommand("M=M+1")
         case .C_POP:
             // Set target address.
-            setSegmentAddress(segment: segment, index: index)
+            setSegmentAddress(segment: segment, index: index, forward: true)
 
             // get value from stack address and place 0 on that address.
             backStackPointer()
@@ -146,61 +129,48 @@ class CodeWriter {
 
             // place the value on the target address.
             writeCommand("@\(segment.correspondingSymbol(index))")
-            writeCommand("A=M")
+            if segment != "temp" && segment != "pointer" {
+                writeCommand("A=M")
+            }
             writeCommand("M=D")
         default:
             print("default")
         }
+
+        // Reset address pointer.
+        setSegmentAddress(segment: segment, index: index, forward: false)
     }
 
-    private func setSegmentAddress(segment: String, index: Int) {
-        var address = 0
+    private func setSegmentAddress(segment: String, index: Int, forward: Bool) {
 
-        // TODO
         switch segment {
-        case "local":
-            address = lclBasePointer + index
-            writeCommand("@\(address)")
-            writeCommand("D=A")
+        case "local", "argument", "this", "that":
             writeCommand("@\(segment.correspondingSymbol())")
-            writeCommand("M=D")
-        case "argument":
-            address = argBasePointer + index
-            writeCommand("@\(address)")
-            writeCommand("D=A")
-            writeCommand("@\(segment.correspondingSymbol())")
-            writeCommand("M=D")
-        case "this":
-            address = thisBasePointer + index
-            writeCommand("@\(address)")
-            writeCommand("D=A")
-            writeCommand("@\(segment.correspondingSymbol())")
-            writeCommand("M=D")
-        case "that":
-            address = thatBasePointer + index
-            writeCommand("@\(address)")
-            writeCommand("D=A")
-            writeCommand("@\(segment.correspondingSymbol())")
-            writeCommand("M=D")
-        case "temp":
-            return
-        case "constant":
+            writeCommand("D=M")
             writeCommand("@\(index)")
-            writeCommand("D=A")
+            if forward {
+                writeCommand("D=D+A")
+            } else {
+                writeCommand("D=D-A")
+            }
+            writeCommand("@\(segment.correspondingSymbol())")
+            writeCommand("M=D")
+        case "temp", "pointer", "constant":
+            // no need to set target address in advance.
+            return
         default:
             fatalError("Invalid segment was intput.")
         }
     }
 
-    private func getSegmentAddressValue(segment: String, index: Int) {
+    private func setSegmentAddressValueToD(segment: String, index: Int) {
         switch segment {
         case "local", "argument", "this", "that":
-            writeCommand("@\(segment.correspondingSymbol())")
-            writeCommand("A=M")
-            writeCommand("D=M")
-        case "temp":
+             writeCommand("@\(segment.correspondingSymbol())")
+             writeCommand("A=M")
+             writeCommand("D=M")
+        case "temp", "pointer":
             writeCommand("@\(segment.correspondingSymbol(index))")
-            writeCommand("A=M")
             writeCommand("D=M")
         case "constant":
             writeCommand("@\(index)")
@@ -211,11 +181,11 @@ class CodeWriter {
     }
 
     func close() {
-        writeCommand("@SP")
-        writeCommand("M=M+1")
-        writeCommand("@SP")
-        writeCommand("A=M")
-        writeCommand("M=0")
+//        writeCommand("@SP")
+//        writeCommand("M=M+1")
+//        writeCommand("@SP")
+//        writeCommand("A=M")
+//        writeCommand("M=0")
     }
 
     private func writeCommand(_ command: String) {
