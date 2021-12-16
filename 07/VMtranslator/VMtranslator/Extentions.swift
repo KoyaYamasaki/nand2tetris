@@ -25,6 +25,9 @@ extension String {
         case "pointer":
             let pointerAddress = index + 3
             return "R\(pointerAddress)"
+        case "static":
+            let staticAddress = index + 16
+            return "\(staticAddress)"
         default:
             fatalError("No correspondingSymbol was found")
         }

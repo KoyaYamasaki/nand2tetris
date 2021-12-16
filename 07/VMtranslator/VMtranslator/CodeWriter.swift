@@ -16,9 +16,6 @@ class CodeWriter {
 
     private var funcIndex: Int = 0
 
-    // This is for the StackArithmetic test work properly.
-    private var useThisAndThat = false
-
     init(inputFile: URL, outputFile: String) {
         let outputFileDir = inputFile.deletingLastPathComponent().appendingPathComponent(outputFile)
 
@@ -35,10 +32,10 @@ class CodeWriter {
     }
 
     func setup() {
-        writeCommand("@\(stackBasePointer)")
-        writeCommand("D=A")
-        writeCommand("@SP")
-        writeCommand("M=D")
+//        writeCommand("@\(stackBasePointer)")
+//        writeCommand("D=A")
+//        writeCommand("@SP")
+//        writeCommand("M=D")
     }
 
     private func backStackPointer() {
@@ -121,11 +118,13 @@ class CodeWriter {
             // get value from stack address and place 0 on that address.
             backStackPointer()
             writeCommand("D=M")
-            writeCommand("M=0")
+            if segment != "static" {
+                writeCommand("M=0")
+            }
 
             // place the value on the target address.
             writeCommand("@\(segment.correspondingSymbol(index))")
-            if segment != "temp" && segment != "pointer" {
+            if segment != "temp" && segment != "pointer" && segment != "static" {
                 writeCommand("A=M")
             }
             writeCommand("M=D")
@@ -151,7 +150,7 @@ class CodeWriter {
             }
             writeCommand("@\(segment.correspondingSymbol())")
             writeCommand("M=D")
-        case "temp", "pointer", "constant":
+        case "temp", "pointer", "constant", "static":
             // no need to set target address in advance.
             return
         default:
@@ -165,7 +164,7 @@ class CodeWriter {
              writeCommand("@\(segment.correspondingSymbol())")
              writeCommand("A=M")
              writeCommand("D=M")
-        case "temp", "pointer":
+        case "temp", "pointer", "static":
             writeCommand("@\(segment.correspondingSymbol(index))")
             writeCommand("D=M")
         case "constant":
