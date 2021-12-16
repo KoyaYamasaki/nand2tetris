@@ -136,6 +136,10 @@ class CodeWriter {
         setSegmentAddress(segment: segment, index: index, forward: false)
     }
 
+    func writeLabel(command: String) {
+        
+    }
+
     private func setSegmentAddress(segment: String, index: Int, forward: Bool) {
 
         switch segment {

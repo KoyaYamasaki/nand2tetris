@@ -62,13 +62,18 @@ class Parser {
     }
 
     var commandType: CommandType {
-        if currentCommand.contains("push") {
+        switch commandSeparateByArgs[0] {
+        case "push":
             return .C_PUSH
-        } else if currentCommand.contains("pop") {
+        case "pop":
             return .C_POP
-        } else if commandSeparateByArgs.count == 1 {
-            return .C_ARITHMETIC
-        } else {
+        case "label":
+            return .C_LABEL
+        case "if-goto":
+            return .C_IF
+        case "goto":
+            return .C_GOTO
+        default:
             return .UNKNOWN
         }
     }

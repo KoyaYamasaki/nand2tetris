@@ -51,6 +51,8 @@ class VMtranslator {
                 codeWriter.writeArithmetic(command: parser.arg1())
             case .C_PUSH, .C_POP:
                 codeWriter.writePushPop(commandType: parser.commandType, segment: parser.arg1(), index: Int(parser.arg2())!)
+            case .C_LABEL:
+                codeWriter.writeLabel(command: parser.arg1())
             default:
                 print("default")
             }
