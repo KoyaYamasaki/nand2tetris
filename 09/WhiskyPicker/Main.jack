@@ -1,0 +1,42 @@
+
+class Main {
+    function void main() {
+        var int country; // 0: Scotch, 1: American, 2: Japanese
+        var int taste;   // 0: frutity, 1: smoky | (0: sweet, 1: spicy for American)
+        var int body;    // 0: light, 1: rich
+        var Whisky pickedWhisky;
+        var WhiskyPicker picker;
+
+        do Output.printString("Scotch or American or Japanese?");
+        do Output.println();
+        let country = Keyboard.readInt("0: Scotch \n1: American \n2: Japanese");
+        let picker = WhiskyPicker.new();
+        do picker.filterByCountry(country);
+
+        if (country = 1) {
+            do Output.printString("Do you prefer sweet or spicy?");
+            do Output.println();
+            let taste = Keyboard.readInt("0: sweet \n1: spicy");
+        } else {
+            do Output.printString("Do you prefer fruity or smoky?");
+            do Output.println();
+            let taste = Keyboard.readInt("0: fruity \n1: smoky");
+        }
+
+        do picker.filterByTaste(taste);
+
+        do Output.printString("Do you prefer light or rich?");
+        do Output.println();
+        let body = Keyboard.readInt("0: light \n1: rich");
+        do picker.filterByBody(body);
+
+        let pickedWhisky = picker.getPickedWhisky();
+
+        do Output.printString(pickedWhisky[0]);
+        do Output.printString(" is for your taste!");
+
+        do pickedWhisky.dispose();
+        do picker.dispose();
+        return;
+    }
+}

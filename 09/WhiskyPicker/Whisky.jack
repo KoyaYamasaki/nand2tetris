@@ -1,0 +1,20 @@
+
+class Whisky {
+    field String name;
+    field int country;
+    field int taste;
+    field int body;
+
+    constructor Whisky new(String paramName, int paramCountry, int paramTaste, int paramBody) {
+        let name = paramName;
+        let country = paramCountry;
+        let taste = paramTaste;
+        let body = paramBody;
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

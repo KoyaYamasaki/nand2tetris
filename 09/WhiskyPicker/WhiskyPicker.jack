@@ -1,0 +1,94 @@
+
+class WhiskyPicker {
+    field Array filteredByCountry;
+    field Array filteredByTaste;
+    field Array whiskyList;
+    field Whisky pickedWhisky;
+
+    constructor WhiskyPicker new() {
+        let whiskyList = Array.new(12);
+        let whiskyList[0] = Whisky.new("Glenfiddich", 0, 0, 0);
+        let whiskyList[1] = Whisky.new("Macallan", 0, 0, 1);
+        let whiskyList[2] = Whisky.new("Laphroaig", 0, 1, 0);
+        let whiskyList[3] = Whisky.new("Lagavulin", 0, 1, 1);
+
+        let whiskyList[4] = Whisky.new("JackDaniels", 1, 0, 0);
+        let whiskyList[5] = Whisky.new("MarkersMark", 1, 0, 1);
+        let whiskyList[6] = Whisky.new("JimBeam", 1, 1, 0);
+        let whiskyList[7] = Whisky.new("WildTurkey", 1, 1, 1);
+
+        let whiskyList[8] = Whisky.new("FujiSanroku", 2, 0, 0);
+        let whiskyList[9] = Whisky.new("Yamazaki", 2, 0, 1);
+        let whiskyList[10] = Whisky.new("Hakusyu", 2, 1, 0);
+        let whiskyList[11] = Whisky.new("Yoichi", 2, 1, 1);
+
+        let filteredByCountry = Array.new(4);
+        let filteredByTaste = Array.new(2);
+        return this;
+    }
+
+    method void filterByCountry(int paramCountry) {
+        var Whisky localWhisky;
+        var int i, j, localCountry;
+
+        let i = 0;
+        let j = 0;
+
+        while (i < 12) {
+            let localWhisky = whiskyList[i];
+            let localCountry = localWhisky[1];
+            if (localCountry = paramCountry) {
+                let filteredByCountry[j] = localWhisky;
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void filterByTaste(int paramTaste) {
+        var Whisky localWhisky;
+        var int i, j, localTaste;
+
+        let i = 0;
+        let j = 0;
+
+        while (i < 4) {
+            let localWhisky = filteredByCountry[i];
+            let localTaste = localWhisky[2];
+            if (localTaste = paramTaste) {
+                let filteredByTaste[j] = localWhisky;
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void filterByBody(int paramBody) {
+        var Whisky localWhisky;
+        var int i, localBody;
+
+        let i = 0;
+
+        while (i < 2) {
+            let localWhisky = filteredByTaste[i];
+            let localBody = localWhisky[3];
+            if (localBody = paramBody) {
+                let pickedWhisky = localWhisky;
+            }
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method Whisky getPickedWhisky() {
+        return pickedWhisky;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}
